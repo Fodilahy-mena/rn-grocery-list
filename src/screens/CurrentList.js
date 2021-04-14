@@ -1,14 +1,14 @@
 import React from 'react'
 
-import { View, Text, SafeAreaView } from 'react-native'
+import { View, Text, SafeAreaView} from 'react-native'
 
 import nachos from '../data/nachos'
 export default () => {
     return (
         <SafeAreaView>
-            {nachos.map((item)=>{
+            {nachos.map((item, index)=>{
 
-                return <Text>{item.name}</Text>
+                return <Text key={index}>{item.name}</Text>
 
             })}
         </SafeAreaView>
@@ -16,3 +16,4 @@ export default () => {
     )
 
 };
+
