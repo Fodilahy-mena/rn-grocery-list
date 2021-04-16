@@ -20,6 +20,8 @@ export default () => {
                             name={item.name}
                             onFavoritePress={() => alert("todo: handle favorite")}
                             isFavorite={index < 2}
+                            onAddedSwipe={()=> alert("todo: added swipe")}
+                            onDeleteSwipe={()=> alert("todo: delete swipe")}
                         />
                     )}
                     keyExtractor={(item) => item.id}
