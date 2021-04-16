@@ -1,19 +1,25 @@
-import React, {useState} from 'react'
-import { View, Text, SafeAreaView, ScrollView, FlatList, KeyboardAvoidingView} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { View, Text, SafeAreaView, ScrollView, FlatList, KeyboardAvoidingView, ActivityIndicator, Active} from 'react-native'
 import nachos from '../data/nachos';
-import {v4 as uuid } from 'uuid';
 
 import ListItem, {Separator} from '../components/ListItem';
 import AddItem from '../components/AddItem';
+import {userCurrentList} from '../util/ListManager'
 
 export default () => {
-    const [list, setList] = useState(nachos);
-    const addItem = (text) => {
-        setList([{id: uuid(), name: text}, ...list])
-    }
-    const removeItem = (id) => {
-        const newList = list.filter(item => item.id !== id);
-        setList(newList);
+    const {
+        list,
+        loading,
+        addItem,
+        removeItem,
+    } = userCurrentList();
+    
+    if(loading) {
+        return (
+            <SafeAreaView>
+                <ActivityIndicator size="large"/>
+            </SafeAreaView>
+        )
     }
     return (
         <SafeAreaView style={{flex: 1,}}>
