@@ -20,6 +20,7 @@ import ItemDetails from '../screens/ItemDetails';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import { StyleSheet} from 'react-native';
+import {Text} from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -28,7 +29,15 @@ const CurrentListStack = () => {
         <NavigationContainer >
             <Stack.Navigator>
                 <Stack.Screen name="Shopping List" component={CurrentList}/>
-                <Stack.Screen name="ItemDetails" component={ItemDetails}/>
+                <Stack.Screen name="ItemDetails" component={ItemDetails}
+                    options={({route}) => {
+                        return {
+                            headerTitle: () => {
+                                return <Text>{route.params.name}</Text>
+                            }
+                        }
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     )

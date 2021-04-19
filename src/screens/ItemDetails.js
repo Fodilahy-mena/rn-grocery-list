@@ -1,2 +1,2 @@
 
-export default () => null;
+export default ({route}) => null;
