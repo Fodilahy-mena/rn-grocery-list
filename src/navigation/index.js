@@ -33,7 +33,7 @@ const CurrentListStack = () => {
                     options={({route}) => {
                         return {
                             headerTitle: () => {
-                                return <Text>{route.params.name}</Text>
+                                return <Text>{route.params.item.name}</Text>
                             }
                         }
                     }}

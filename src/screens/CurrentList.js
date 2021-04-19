@@ -37,7 +37,7 @@ export default ({navigation}) => {
                             onDeleteSwipe={()=> removeItem(item.id)}
                             onRowPress={() => {
                                 navigation.navigate("ItemDetails", {
-                                    name: item.name
+                                    item: item
                                 })
                             }}
                         />
