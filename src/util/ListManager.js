@@ -7,14 +7,27 @@ const updateStoredCurrentList = (list) => {
     // add file id name as '@@GroceryList/currentList'
     AsyncStorage.setItem('@@GroceryList/currentList', JSON.stringify(list))
 }
+
+const updateStoredCurrentCart = (cart) => {
+    // add file id name as '@@GroceryList/currentList'
+    AsyncStorage.setItem('@@GroceryList/currentCart', JSON.stringify(cart))
+}
 export const userCurrentList = () => {
     const [list, setList] = useState([]);
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
+    const [cart, setCart] = useState([]);
 
     const addItem = (text) => {
         const newList = [{id: uuid(), name: text}, ...list];
         setList(newList)
         updateStoredCurrentList(newList)
+    }
+
+    const addToCart = (item) => {
+        removeItem(item.id);
+        const newCart = [item, ...cart];
+        setCart(newCart)
+        updateStoredCurrentCart(newCart)
     }
     
     const removeItem = (id) => {
@@ -24,14 +37,20 @@ export const userCurrentList = () => {
     }
     useEffect(() => {
         setTimeout(() => {
-            AsyncStorage.getItem('@@GroceryList/currentList')
-            .then(data => JSON.parse(data))
-            .then(data => {
-                if(data) {
-                    setList(data);
+            Promise.all([
+                AsyncStorage.getItem('@@GroceryList/currentList'),
+                AsyncStorage.getItem('@@GroceryList/currentCart'),
+            ])
+            .then(([list, cartItems]) => [JSON.parse(list), JSON.parse(cartItems)])
+            .then((([list, cartItems]) => {
+                if(list) {
+                    setList(list);
+                }
+                if(cartItems) {
+                    setCart(cartItems);
                 }
                 setLoading(false)
-            })
+            }))
         }, 1000);
     }, []);
     return {
@@ -39,5 +58,7 @@ export const userCurrentList = () => {
         loading,
         addItem,
         removeItem,
+        cart,
+        addToCart,
     }
 };
