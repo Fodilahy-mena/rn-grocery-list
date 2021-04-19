@@ -16,6 +16,7 @@
 
 import React from 'react';
 import CurrentList from '../screens/CurrentList';
+import ItemDetails from '../screens/ItemDetails';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import { StyleSheet} from 'react-native';
@@ -27,6 +28,7 @@ const CurrentListStack = () => {
         <NavigationContainer >
             <Stack.Navigator>
                 <Stack.Screen name="Shopping List" component={CurrentList}/>
+                <Stack.Screen name="ItemDetails" component={ItemDetails}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
