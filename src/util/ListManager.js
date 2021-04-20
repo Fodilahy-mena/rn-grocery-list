@@ -9,13 +9,20 @@ const updateStoredCurrentList = (list) => {
 }
 
 const updateStoredCurrentCart = (cart) => {
-    // add file id name as '@@GroceryList/currentList'
+    // add file id name as '@@GroceryList/currentCart'
     AsyncStorage.setItem('@@GroceryList/currentCart', JSON.stringify(cart))
 }
+
+const updateStoredCurrentFavorite = (favorite) => {
+    // add file id name as '@@GroceryList/currentFavorite'
+    AsyncStorage.setItem('@@GroceryList/currentFavorite', JSON.stringify(favorite))
+}
+
 export const userCurrentList = () => {
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [cart, setCart] = useState([]);
+    const [favorite, setFavorite] = useState([]);
 
     const addItem = (text) => {
         const newList = [{id: uuid(), name: text}, ...list];
@@ -29,6 +36,13 @@ export const userCurrentList = () => {
         setCart(newCart)
         updateStoredCurrentCart(newCart)
     }
+
+    const addToFavorite = (item) => {
+        removeItem(item.id);
+        const newFavorite = [item, ...favorite];
+        setFavorite(newFavorite)
+        updateStoredCurrentFavorite(newFavorite)
+    }
     
     const removeItem = (id) => {
         const newList = list.filter(item => item.id !== id);
@@ -40,14 +54,18 @@ export const userCurrentList = () => {
             Promise.all([
                 AsyncStorage.getItem('@@GroceryList/currentList'),
                 AsyncStorage.getItem('@@GroceryList/currentCart'),
+                AsyncStorage.getItem('@@GroceryList/currentFavorite'),
             ])
-            .then(([list, cartItems]) => [JSON.parse(list), JSON.parse(cartItems)])
-            .then((([list, cartItems]) => {
+            .then(([list, cartItems, favoriteItems]) => [JSON.parse(list), JSON.parse(cartItems), JSON.parse(favoriteItems)])
+            .then((([list, cartItems, favoriteItems]) => {
                 if(list) {
                     setList(list);
                 }
                 if(cartItems) {
                     setCart(cartItems);
+                }
+                if(favoriteItems) {
+                    setFavorite(favoriteItems);
                 }
                 setLoading(false)
             }))
@@ -60,5 +78,7 @@ export const userCurrentList = () => {
         removeItem,
         cart,
         addToCart,
+        favorite,
+        addToFavorite,
     }
 };
