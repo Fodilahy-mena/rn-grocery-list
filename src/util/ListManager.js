@@ -38,7 +38,6 @@ export const userCurrentList = () => {
     }
 
     const addToFavorite = (item) => {
-        removeItem(item.id);
         const newFavorite = [item, ...favorite];
         setFavorite(newFavorite)
         updateStoredCurrentFavorite(newFavorite)
@@ -49,6 +48,23 @@ export const userCurrentList = () => {
         setList(newList);
         updateStoredCurrentList(newList)
     }
+
+    const removeFromCart = (item) => {
+        const newItem = [item, ...list];
+        setList(newItem)
+        updateStoredCurrentList(newItem)
+
+        const newCart = cart.filter(cartItm => cartItm.id !== item.id);
+        setCart(newCart)
+        updateStoredCurrentCart(newCart)
+    }
+
+    const unFavoriteItem = (id) => {
+        const newFavorite = favorite.filter(item => item.id !== id);
+        setFavorite(newFavorite);
+        updateStoredCurrentFavorite(newFavorite)
+    }
+
     useEffect(() => {
         setTimeout(() => {
             Promise.all([
@@ -80,5 +96,7 @@ export const userCurrentList = () => {
         addToCart,
         favorite,
         addToFavorite,
+        unFavoriteItem,
+        removeFromCart,
     }
 };

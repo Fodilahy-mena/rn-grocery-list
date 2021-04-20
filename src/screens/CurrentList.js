@@ -5,6 +5,7 @@ import nachos from '../data/nachos';
 import ListItem, {Separator, SectionHeader} from '../components/ListItem';
 import AddItem from '../components/AddItem';
 import {userCurrentList} from '../util/ListManager'
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default ({navigation}) => {
     const {
@@ -16,8 +17,11 @@ export default ({navigation}) => {
         cart,
         favorite,
         addToFavorite,
+        unFavoriteItem,
+        removeFromCart,
     } = userCurrentList();
-    console.log('favorite', favorite)
+
+
     if(loading) {
         return (
             <SafeAreaView>
@@ -25,6 +29,8 @@ export default ({navigation}) => {
             </SafeAreaView>
         )
     }
+    // console.log("items", list)
+    // AsyncStorage.clear();
     return (
         <SafeAreaView style={{flex: 1,}}>
             <KeyboardAvoidingView 
@@ -41,9 +47,9 @@ export default ({navigation}) => {
                     renderItem={({item, index}) => (
                         <ListItem 
                             name={item.name}
-                            onFavoritePress={() => addToFavorite(item)}
-                            isFavorite={index < 0}
-                            onAddedSwipe={()=> addToCart(item)}
+                            onFavoritePress={() => favorite.find(fav => fav.id === item.id) ? unFavoriteItem(item.id) : addToFavorite(item)}
+                            isFavorite={favorite.find(fav => fav.id === item.id)}
+                            onAddedSwipe={()=> cart.find(c => c.id === item.id) ? removeFromCart(item) : addToCart(item)}
                             onDeleteSwipe={()=> removeItem(item.id)}
                             onRowPress={() => {
                                 navigation.navigate("ItemDetails", {

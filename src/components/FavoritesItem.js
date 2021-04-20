@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { View, Text, StyleSheet, Image, TouchableOpacity, Platform, TouchableHighling, Animated} from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Platform, Animated} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 const styles = StyleSheet.create({
     container: {
@@ -48,6 +48,13 @@ const styles = StyleSheet.create({
         padding: 20,
 
     },
+    sectionContainer: {
+        backgroundColor: '#d3d3d3',
+        paddingVertical: 10,
+    },
+    sectionText: {
+        fontWeight: '600',
+    }
 });
 
 export const Separator = () => <View style={styles.separator}/>
@@ -77,6 +84,11 @@ const RightActions = (progress, dragX) => {
     )
 };
 
+export const SectionHeader = ({title}) => (
+    <View style={styles.sectionContainer}>
+        <Text style={styles.sectionText}>{title}</Text>
+    </View>
+);
 
 const FavoritesItem = ({name, onFavoritePress, isFavorite, onAddedSwipe, onDeleteSwipe, onRowPress}) => {
     let starIcon;
@@ -109,13 +121,10 @@ const FavoritesItem = ({name, onFavoritePress, isFavorite, onAddedSwipe, onDelet
                                 resizeMode="contain"
                             />
                         </TouchableOpacity>
-                        
                     }
                 </View>
             </TouchableOpacity>
-            
         </Swipeable>
-
     )
 
 };

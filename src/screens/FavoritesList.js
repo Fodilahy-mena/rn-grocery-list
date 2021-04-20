@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react'
-import { View, Text, SafeAreaView, ScrollView, FlatList,SectionList, KeyboardAvoidingView, ActivityIndicator, Active} from 'react-native'
-import nachos from '../data/nachos';
+import React from 'react'
+import { SafeAreaView,SectionList, KeyboardAvoidingView, ActivityIndicator} from 'react-native'
 
-import FavoritesItem, {Separator} from '../components/FavoritesItem';
+import FavoritesItem, {Separator, SectionHeader} from '../components/FavoritesItem';
 import {userCurrentList} from '../util/ListManager'
 
 export default ({navigation}) => {
@@ -12,6 +11,7 @@ export default ({navigation}) => {
         addToCart, 
         favorite,
         addToFavorite,
+        unFavoriteItem,
     } = userCurrentList();
     if(loading) {
         return (
@@ -25,13 +25,17 @@ export default ({navigation}) => {
             <KeyboardAvoidingView 
                 style={{flex:1,}}
                 behavior="padding">
-                <FlatList 
-                    data={favorite}
-                    
+                <SectionList 
+                    sections={[
+                        {title: 'Favorites', data: favorite},
+                    ]}
+                    renderSectionHeader={({section}) => (
+                        <SectionHeader title={section.title}/>
+                    )}
                     renderItem={({item, index}) => (
                         <FavoritesItem 
                             name={item.name}
-                            onFavoritePress={() => addToFavorite(item)}
+                            onFavoritePress={() => unFavoriteItem(item.id)}
                             isFavorite={true}
                             onAddedSwipe={()=> addToCart(item)}
                             onDeleteSwipe={()=> removeItem(item.id)}
